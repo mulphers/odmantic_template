@@ -17,7 +17,7 @@ class DatabaseSettings(BaseSettings):
     port: int
 
     @property
-    def url(self):
+    def url(self) -> str:
         return f'mongodb://{self.host}:{self.port}/'
 
 
