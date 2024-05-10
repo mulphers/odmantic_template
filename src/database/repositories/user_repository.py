@@ -20,7 +20,7 @@ class UserRepository(OdmanticRepository[User]):
             limit: Optional[int] = None
     ) -> Sequence[User]:
         return await self.select_many(
-            self.model.is_admin is True,
+            self.model.is_admin == True,  # noqa[E712]
             offset=offset,
             limit=limit
         )

@@ -41,8 +41,8 @@ class OdmanticRepository(AbstractRepository[ModelType, AIOSession, bool]):
 
     async def delete(self, *clauses: bool) -> Sequence[ModelType]:
         removed_users = await self.select_many(*clauses)
+        removed_users_count = await self.session.remove(self.model, *clauses)
 
-        await (removed_users_count := self.session.remove(self.model, *clauses))
         assert removed_users_count == len(removed_users)
 
         return removed_users

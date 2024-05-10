@@ -7,8 +7,8 @@ from pydantic import BaseModel
 class UserDTO(BaseModel):
     user_id: int
     username: str
-    is_active: bool
-    is_admin: bool
+    is_active: Optional[bool] = None
+    is_admin: Optional[bool] = None
 
 
 # Must contain fields from src\database\models\user.py
