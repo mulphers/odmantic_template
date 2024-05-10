@@ -31,16 +31,16 @@ class AbstractUnitOfWork(ABC, Generic[SessionType, TransactionType]):
 
     @abstractmethod
     async def commit(self) -> None:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     async def rollback(self) -> None:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     async def create_transaction(self) -> None:
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     async def close_transaction(self) -> None:
-        pass
+        raise NotImplementedError
