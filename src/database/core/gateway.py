@@ -4,6 +4,7 @@ from types import TracebackType
 from typing import Optional, Type
 
 from src.common.interfaces.unit_of_work import AbstractUnitOfWork
+from src.database.repositories.user_repository import UserRepository
 
 
 class DatabaseGateway:
@@ -21,6 +22,9 @@ class DatabaseGateway:
             exc_tb: Optional[TracebackType]
     ) -> None:
         await self.uow.__aexit__(exc_type, exc_val, exc_tb)
+
+    def user_repository(self) -> UserRepository:
+        return UserRepository(session=self.uow.session)
 
 
 def database_gateway_factory(uow: AbstractUnitOfWork) -> DatabaseGateway:
