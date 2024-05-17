@@ -1,0 +1,60 @@
+version: '3.1'
+
+services:
+  application:
+    container_name: application_container
+    build: .
+    restart: on-failure
+    depends_on:
+      - mongo_container_1
+    networks:
+      - app_network
+    command: sh -c 'sleep 55 && python -m src'
+
+  mongo_container_1:
+    container_name: mongo_container_1
+    image: mongo
+    restart: always
+    networks:
+      - app_network
+    volumes:
+      - mongo_data_1:/data/db/
+      - mongo_data_1:/data/configdb/
+    ports:
+      - '27018:27017'
+    command: [ 'mongod', '--replSet', 'mongo_replica_set', '--bind_ip', 'localhost,mongo_container_1' ]
+
+  mongo_container_2:
+    container_name: mongo_container_2
+    image: mongo
+    restart: always
+    networks:
+      - app_network
+    volumes:
+      - mongo_data_2:/data/db/
+      - mongo_data_2:/data/configdb/
+    ports:
+      - '27019:27017'
+    command: [ 'mongod', '--replSet', 'mongo_replica_set', '--bind_ip', 'localhost,mongo_container_2' ]
+
+  mongo_express_container:
+    container_name: mongo_express_container
+    image: mongo-express
+    restart: always
+    depends_on:
+      - mongo_container_1
+    networks:
+      - app_network
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://${DATABASE_HOST}:${DATABASE_PORT}/
+    env_file:
+      - ./.env
+    ports:
+      - '8082:8081'
+
+volumes:
+  mongo_data_1: null
+  mongo_data_2: null
+
+networks:
+  app_network: null
