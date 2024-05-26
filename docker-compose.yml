@@ -1,15 +1,15 @@
 version: '3.1'
 
 services:
-  application:
+  application_container:
     container_name: application_container
     build: .
-    restart: on-failure
+    restart: always
     depends_on:
-      - mongo_container_1
+      - mongo_setup_container
     networks:
       - app_network
-    command: sh -c 'sleep 55 && python -m src'
+    command: [ 'python', '-m', 'src' ]
 
   mongo_container_1:
     container_name: mongo_container_1
@@ -37,6 +37,21 @@ services:
       - '27019:27017'
     command: [ 'mongod', '--replSet', 'mongo_replica_set', '--bind_ip', 'localhost,mongo_container_2' ]
 
+  mongo_setup_container:
+    container_name: mongo_setup_container
+    image: mongo
+    restart: no
+    depends_on:
+      - mongo_container_1
+      - mongo_container_2
+    networks:
+      - app_network
+    volumes:
+      - mongo_setup_data:/data/db/
+      - mongo_setup_data:/data/configdb/
+      - ./scripts:/scripts/
+    entrypoint: [ "bash", "/scripts/entrypoint.sh" ]
+
   mongo_express_container:
     container_name: mongo_express_container
     image: mongo-express
@@ -55,6 +70,7 @@ services:
 volumes:
   mongo_data_1: null
   mongo_data_2: null
+  mongo_setup_data: null
 
 networks:
   app_network: null
