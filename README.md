@@ -43,6 +43,7 @@ odmantic_template/
 │   │   └── __init__.py
 │   ├── __init__.py
 │   └── __main__.py
+├── .dockerignore
 ├── .env_example
 ├── .flake8
 ├── .gitignore
