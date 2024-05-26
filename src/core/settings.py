@@ -13,12 +13,13 @@ class DatabaseSettings(BaseSettings):
         env_prefix='database_'
     )
 
+    uri: str
     host: str
     port: int
 
     @property
     def url(self) -> str:
-        return f'mongodb://{self.host}:{self.port}/'
+        return self.uri.format(self.host, self.port)
 
 
 class Settings(BaseSettings):
