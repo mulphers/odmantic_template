@@ -1,8 +1,8 @@
 from typing import Optional, Sequence, Type
 
-from src.common.dto.user import UserCreate, UserUpdate
-from src.database.models.user import User
-from src.database.repositories.odmantic_repository import OdmanticRepository
+from src.common.dto import UserCreate, UserUpdate
+from src.database.models import User
+from src.database.repositories import OdmanticRepository
 
 
 class UserRepository(OdmanticRepository[User]):

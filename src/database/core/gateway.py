@@ -4,7 +4,7 @@ from types import TracebackType
 from typing import Optional, Type
 
 from src.common.interfaces.unit_of_work import AbstractUnitOfWork
-from src.database.repositories.user_repository import UserRepository
+from src.database.repositories import UserRepository
 
 
 class DatabaseGateway:
